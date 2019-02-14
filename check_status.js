@@ -1,51 +1,11 @@
 const uscis = require('uscis')
+var colors = require('colors')
 
-var list_r = ['EAC1990044119',
-'EAC1990044120',
-'EAC1990044162',
-'EAC1990044173',
-'EAC1990044182',
-'EAC1990044183',
-'EAC1990044184',
-'EAC1990044187',
-'EAC1990044188',
-'EAC1990044195',
-'EAC1990044196',
-'EAC1990044198',
-'EAC1990044199',
-'EAC1990044200',
-'EAC1990044201',
-'EAC1990044202',
-'EAC1990044203',
-'EAC1990044204',
-'EAC1990044205',
-'EAC1990044206',
-'EAC1990044207',
-'EAC1990044208',
-'EAC1990044209',
-'EAC1990044210',
-'EAC1990044211',
-'EAC1990044212',
-'EAC1990044213',
-'EAC1990044214',
-'EAC1990044218',
-'EAC1990044219',
-'EAC1990044224',
-'EAC1990044225',
-'EAC1990044226',
-'EAC1990044228',
-'EAC1990044229',
-'EAC1990044231',
-'EAC1990044232',
-'EAC1990044233',
-'EAC1990044234',
-'EAC1990044236',
-'EAC1990044268',
-'EAC1990044276',
-'EAC1990044277',
-'EAC1990044278',
-'EAC1990044279']
+var list_r = []
 
+for(let i=1990044180;i<1990044299;i++) {
+    list_r.push('EAC' + i);
+}
 
 let all_requests = list_r.map(async token => {
     return await uscis(token).then((status) => {
@@ -132,12 +92,16 @@ Promise.all(all_requests).then(loadAllRequests => {
         if (response.type == 'I765') {
             if (statusList.includes(response.title)) {
                 statusI765[response.title].count++;
-                statusI765[response.title].tokens.push(response.token)
+
+                if(response.title == 'New Card Is Being Produced')
+                    statusI765[response.title].tokens.push(response.token)
+                else 
+                    statusI765[response.title].tokens.push(response.token)
 
                 if (response.token == 'EAC1990044234' && response.title == 'New Card Is Being Produced') {
                     victoryMessage = 'Yayy!!!!! Its done!!!!!!!!!!!!'
                 }
-                
+
             } else {
                 statusI765['Others'].count++;
             }
