@@ -2,8 +2,9 @@ const uscis = require('uscis')
 var colors = require('colors')
 
 var list_r = []
-
-for(let i=1990044180;i<1990044299;i++) {
+// process.argv[2]
+// for(let i=1990044000;i<1990044180;i++) {
+for(let i=parseInt(process.argv[2]);i<parseInt(process.argv[3]);i++) {
     list_r.push('EAC' + i);
 }
 
