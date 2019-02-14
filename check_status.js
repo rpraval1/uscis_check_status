@@ -66,6 +66,8 @@ let all_requests = list_r.map(async token => {
     })
 });
 
+let victoryMessage = ''
+
 let statusI765 = {
     "New Card Is Being Produced": {
         count: 0,
@@ -131,6 +133,11 @@ Promise.all(all_requests).then(loadAllRequests => {
             if (statusList.includes(response.title)) {
                 statusI765[response.title].count++;
                 statusI765[response.title].tokens.push(response.token)
+
+                if (response.token == 'EAC1990044234' && response.title == 'New Card Is Being Produced') {
+                    victoryMessage = 'Yayy!!!!! Its done!!!!!!!!!!!!'
+                }
+                
             } else {
                 statusI765['Others'].count++;
             }
@@ -143,9 +150,14 @@ Promise.all(all_requests).then(loadAllRequests => {
             }
         }
     });
-
+    if (victoryMessage) {
+        console.log(victoryMessage)
+    }
     console.log("Summary I765 Forms: ");
     console.log(statusI765);
+    if (victoryMessage) {
+        console.log(victoryMessage)
+    }
 
     // console.log("Summary Other Forms: ");
     // console.log(statusOthers);
